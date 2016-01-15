@@ -1,3 +1,3 @@
-FROM registry.localhost:5000/composer
+FROM composer/composer
 
 ENTRYPOINT ["/app/entrypoint.sh"]
