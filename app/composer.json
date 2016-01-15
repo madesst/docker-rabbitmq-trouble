@@ -1,0 +1,10 @@
+{
+  "require": {
+      "videlalvaro/php-amqplib": "2.2.*"
+  },
+    "autoload": {
+        "psr-4": {
+            "": "src"
+        }
+    }
+}

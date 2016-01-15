@@ -1,0 +1,51 @@
+sub:
+    build: .
+    container_name: rab_sub
+    command: sub
+    volumes:
+     - ./app:/app
+    tty: true
+    links:
+     - rabbit1:rabbitmq
+     - rabbit2:rabbitmq_2
+     - rabbit3:rabbitmq_3
+pub:
+    build: .
+    container_name: rab_pub
+    command: pub
+    volumes_from:
+     - sub
+    tty: true
+    links:
+     - rabbit1:rabbitmq
+     - rabbit2:rabbitmq_2
+     - rabbit3:rabbitmq_3
+rabbit1:
+  image: bijukunjummen/rabbitmq-server
+  hostname: rabbit1
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+rabbit2:
+  image: bijukunjummen/rabbitmq-server
+  hostname: rabbit2
+  links:
+    - rabbit1
+  environment: 
+   - CLUSTERED=true
+   - CLUSTER_WITH=rabbit1
+  ports:
+      - "5673:5672"
+      - "15675:15672"
+rabbit3:
+  image: bijukunjummen/rabbitmq-server
+  hostname: rabbit3
+  links:
+    - rabbit1
+    - rabbit2
+  environment:
+   - CLUSTERED=true
+   - CLUSTER_WITH=rabbit1
+  ports:
+        - "5674:5672"
+        - "15674:15672"
